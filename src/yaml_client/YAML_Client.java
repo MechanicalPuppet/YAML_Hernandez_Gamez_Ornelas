@@ -12,33 +12,23 @@ import yaml_client.gui.FPerson;
 
 /**
  *
- * @author Jbran
+ * @author Team 03
  */
 public class YAML_Client {
     
-    private static YAMLClientThread cThread;
+
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args){
         // TODO code application logic here
-        try{
-        Socket socket = new Socket("localhost", 666);
-        cThread = new YAMLClientThread(socket);
-        Thread thread = new Thread(cThread);
-        thread.start();
-        
-        new FPerson(cThread).setVisible(true);
-        
-        } catch(IOException x){
-            System.out.println(x.getMessage() + "Falló en el YAML_Client al momento de la creación del Socket e Hilo.");
-        }
+        YAML_ClientSocket client = new  YAML_ClientSocket();
+        client.start();
+        new FPerson(client.getThread()).setVisible(true);
     }
     
-    public YAMLClientThread getThread(){
-        return this.cThread;
-    }
+   
     
     
     

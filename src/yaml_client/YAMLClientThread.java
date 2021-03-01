@@ -21,79 +21,76 @@ import yaml_client.gui.FPerson;
 
 /**
  *
- * @author Jbran
+ * @author Team 03
  */
-public class YAMLClientThread extends Observable implements Runnable{
+public class YAMLClientThread extends Observable implements Runnable {
 
     private Socket socket;
 
     public YAMLClientThread(Socket socket) {
         this.socket = socket;
     }
-    
-    
-    public void sendRequest(Person person){
-        
+
+    public void sendRequest(Person person) {
+
         ObjectMapper om = new ObjectMapper(new YAMLFactory());
-    
-        try{
-            
-        File fileToSend = new File ("C:\\Users\\Jbran\\Desktop\\person.yaml"); 
-        om.writeValue(fileToSend, person);
-        
-        byte[] buffer=new byte[1024];
-        
-        buffer = Files.readAllBytes(fileToSend.toPath());
-        
-        DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-        
-        dOut.writeInt(buffer.length);
-        dOut.write(buffer);
-        
-        } catch(IOException x){
-            System.out.println(x.getMessage() +  "Problem on SendRequest");
+
+        try {
+
+            File fileToSend = new File("C:\\Users\\Zannie\\Desktop\\person.yaml");
+            om.writeValue(fileToSend, person);
+
+            byte[] buffer = new byte[1024];
+
+            buffer = Files.readAllBytes(fileToSend.toPath());
+
+            DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+
+            dOut.writeInt(buffer.length);
+            dOut.write(buffer);
+
+        } catch (IOException x) {
+            System.out.println(x.getMessage() + "Problem on SendRequest");
         }
-        
-        }
-    
-    public Person recieveRequest(){
-       Person person = null;
-        try{
-        DataInputStream dIn = new DataInputStream(socket.getInputStream());
-        
-        int length = dIn.readInt();
-        byte[] message = new byte[length];
-        
-        if(length>0){
-            dIn.readFully(message, 0, message.length);
-        }
-        
-        Parser parser = new Parser(message);
-        
-        person = parser.parsear();
-        
-        
-        } catch (IOException x){
+
+    }
+
+    public Person recieveRequest() {
+        Person person = null;
+        try {
+            DataInputStream dIn = new DataInputStream(socket.getInputStream());
+
+            int length = dIn.readInt();
+            byte[] message = new byte[length];
+
+            if (length > 0) {
+                dIn.readFully(message, 0, message.length);
+            }
+
+            Parser parser = new Parser(message);
+
+            person = parser.parsear();
+
+        } catch (IOException x) {
             System.out.println(x.getMessage() + "Problems on RecieveRequest");
         }
-        
-        
+
         return person;
-        }
-    
-    
-    
-    @Override
-    public void run(){
-        System.out.println("I made it!!");
-        Person person = recieveRequest();
-        if(person != null){
-            this.setChanged();
-            this.notifyObservers(person);
-            this.clearChanged();
-        }
-        
     }
-    
-    
+
+    @Override
+    public void run() {
+        System.out.println("I made it!!");
+        Person person;
+        do {
+            person = recieveRequest();
+            if (person != null) {
+                this.setChanged();
+                this.notifyObservers(person);
+                this.clearChanged();
+            }
+        } while (person != null);
+
+    }
+
 }

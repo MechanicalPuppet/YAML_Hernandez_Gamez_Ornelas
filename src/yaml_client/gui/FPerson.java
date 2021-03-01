@@ -13,10 +13,10 @@ import yaml_client.YAML_Client;
 
 /**
  *
- * @author Jbran
+ * @author Team 03
  */
 public class FPerson extends javax.swing.JFrame implements Observer {
-    
+
     YAMLClientThread clientThread;
 
     /**
@@ -26,9 +26,7 @@ public class FPerson extends javax.swing.JFrame implements Observer {
         initComponents();
         clientThread = yamlClient;
         yamlClient.addObserver(this); //Pa que empiece a observar.
-        
-        
-        
+
     }
 
     /**
@@ -55,7 +53,6 @@ public class FPerson extends javax.swing.JFrame implements Observer {
         lblResult = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
 
-        jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jbran\\Documents\\NetBeansProjects\\YAML_Client\\img\\fondo.png")); // NOI18N
         jLabel7.setText("jLabel7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,25 +68,33 @@ public class FPerson extends javax.swing.JFrame implements Observer {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Name:");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Weight: ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Height:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
         getContentPane().add(txtName, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, 150, -1));
+
+        txtWeight.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtWeightKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtWeight, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, 150, -1));
+
+        txtHeight.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtHeightKeyTyped(evt);
+            }
+        });
         getContentPane().add(txtHeight, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 150, -1));
 
         btnOK.setBackground(new java.awt.Color(0, 204, 204));
-        btnOK.setForeground(new java.awt.Color(0, 0, 0));
         btnOK.setText("OK!");
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,43 +104,49 @@ public class FPerson extends javax.swing.JFrame implements Observer {
         getContentPane().add(btnOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 350, 120, 70));
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("BMI:");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, -1, -1));
 
         lblBMI.setBackground(new java.awt.Color(255, 204, 51));
         lblBMI.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        lblBMI.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(lblBMI, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 250, 150, 20));
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Result: ");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, -1, -1));
 
         lblResult.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        lblResult.setForeground(new java.awt.Color(0, 0, 0));
         getContentPane().add(lblResult, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 300, 150, 20));
-
-        jLabel8.setIcon(new javax.swing.ImageIcon("C:\\Users\\Jbran\\Documents\\NetBeansProjects\\YAML_Client\\img\\icon.png")); // NOI18N
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 360, 410));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-     
+
         Person person = new Person();
         person.setName(txtName.getText());
         person.setHeight(Double.parseDouble(txtHeight.getText()));
         person.setWeight(Double.parseDouble(txtWeight.getText()));
-        
-        
+
         clientThread.sendRequest(person);
-        
-        
-        
+
+
     }//GEN-LAST:event_btnOKActionPerformed
+
+    private void txtWeightKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtWeightKeyTyped
+        char a = evt.getKeyChar();
+        if (Character.isLetter(a)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtWeightKeyTyped
+
+    private void txtHeightKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHeightKeyTyped
+        char a = evt.getKeyChar();
+        if (Character.isLetter(a)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtHeightKeyTyped
 
     /**
      * @param args the command line arguments
@@ -159,12 +170,12 @@ public class FPerson extends javax.swing.JFrame implements Observer {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void update(Observable o, Object o1) { 
-       Person person = (Person) o1;
-       if(o1 != null){
-       lblBMI.setText(String.valueOf(person.getBmi()));
-       lblResult.setText(person.getResult());
-       }
-       
-       }
+    public void update(Observable o, Object o1) {
+        Person person = (Person) o1;
+        if (o1 != null) {
+            lblBMI.setText(String.valueOf(person.getBmi()));
+            lblResult.setText(person.getResult());
+        }
+
+    }
 }
