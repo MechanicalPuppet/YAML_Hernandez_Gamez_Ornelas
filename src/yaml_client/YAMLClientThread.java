@@ -44,10 +44,12 @@ public class YAMLClientThread extends Observable implements Runnable {
 
             buffer = Files.readAllBytes(fileToSend.toPath());
 
-            DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-
-            dOut.writeInt(buffer.length);
-            dOut.write(buffer);
+            //DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+            socket.getOutputStream().write(buffer.length);
+            socket.getOutputStream().write(buffer);
+            
+//            dOut.writeInt(buffer.length);
+//            dOut.write(buffer);
 
         } catch (IOException x) {
             System.out.println(x.getMessage() + "Problem on SendRequest");
@@ -58,13 +60,13 @@ public class YAMLClientThread extends Observable implements Runnable {
     public Person recieveRequest() {
         Person person = null;
         try {
-            DataInputStream dIn = new DataInputStream(socket.getInputStream());
+            //DataInputStream dIn = new DataInputStream(socket.getInputStream());
 
-            int length = dIn.readInt();
+            int length = socket.getInputStream().read();
             byte[] message = new byte[length];
 
             if (length > 0) {
-                dIn.readFully(message, 0, message.length);
+                socket.getInputStream().read(message, 0, message.length);
             }
 
             Parser parser = new Parser(message);

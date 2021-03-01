@@ -24,6 +24,7 @@ public class YAML_ClientSocket {
             cThread = new YAMLClientThread(socket);
             Thread thread = new Thread(cThread);
             thread.start();
+           
 
         } catch (IOException x) {
             System.out.println(x.getMessage() + "Falló en el YAML_Client al momento de la creación del Socket e Hilo.");
